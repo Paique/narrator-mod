@@ -21,6 +21,6 @@ run `gradlew --refresh-dependencies` to refresh the local cache. `gradlew clean`
 
 Additional Resources: 
 =========================
-Brpacks: https://docs.minecraftforge.net/en/latest/gettingstarted/
+Brpacks: https://dc.brpacks.net/
 
 Project made for Himaru.
