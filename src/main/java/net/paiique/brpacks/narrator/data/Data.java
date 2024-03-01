@@ -1,5 +1,8 @@
-package net.paiique.brpacks.narrator.openai;
+package net.paiique.brpacks.narrator.data;
 
+import lombok.Getter;
+import lombok.Setter;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
@@ -10,6 +13,8 @@ import java.util.List;
  * @author paique
  * @version 1.0
  */
+@Getter
+@Setter
 public class Data {
     public LinkedList<String> actualAiText = new LinkedList<>();
 

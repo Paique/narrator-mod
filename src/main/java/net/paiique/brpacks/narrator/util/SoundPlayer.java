@@ -1,6 +1,13 @@
 package net.paiique.brpacks.narrator.util;
 
 import lombok.Setter;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.sounds.SoundInstance;
+import net.minecraft.network.protocol.status.ServerStatus;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraftforge.client.event.sound.SoundEvent;
 import net.paiique.brpacks.narrator.NarratorMod;
 
 import javax.sound.sampled.*;
@@ -16,6 +23,7 @@ import java.nio.file.Path;
 
 public class SoundPlayer {
 
+    @Deprecated
     public void play(Path filePath) {
         try {
             if (filePath == null) {
