@@ -7,15 +7,13 @@ import com.google.gson.JsonParser;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import net.minecraftforge.fml.loading.FMLEnvironment;
-import net.paiique.brpacks.narrator.NarratorClient;
 import net.paiique.brpacks.narrator.NarratorMod;
 import net.paiique.brpacks.narrator.forge.config.ConfigCommon;
 import net.paiique.brpacks.narrator.forge.event.NarratorTickEvent;
 import net.paiique.brpacks.narrator.forge.network.PacketHandler;
 import net.paiique.brpacks.narrator.forge.network.SCPlaySoundPacket;
 import net.paiique.brpacks.narrator.forge.util.BulkPlayerMessage;
-import net.paiique.brpacks.narrator.util.AudioConverter;
-import net.paiique.brpacks.narrator.util.FileUtil;
+import net.paiique.brpacks.narrator.util.Ffmpeg;
 import org.jetbrains.annotations.NotNull;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -167,15 +165,17 @@ public class PostAndSendPacket extends Thread {
         in.close();
         fos.close();
 
-        AudioConverter.convert(path);
-        Files.delete(path);
+        Ffmpeg ffmpeg = new Ffmpeg();
+        ffmpeg.setFilePath(path);
+        ffmpeg.setCallback(() -> {
+            Path pathCall = Path.of("output.ogg");
+            System.out.println("Audio File" + pathCall.getFileName().toString());
+            byte[] audioCall = NarratorMod.fileUtil.convertToByteArray(pathCall);
 
-        path = Path.of("output.ogg");
-        System.out.println("Audio File" + path.getFileName().toString());
-        audioData = NarratorMod.fileUtil.convertToByteArray(path);
-
-        System.out.println("audiodata: " + audioData.length);
-        PacketHandler.sendToAllClients(new SCPlaySoundPacket(audioData));
-        lock = false;
+            System.out.println("audiodata: " + audioCall.length);
+            PacketHandler.sendToAllClients(new SCPlaySoundPacket(audioCall));
+            lock = false;
+        });
+        ffmpeg.start();
     }
 }
