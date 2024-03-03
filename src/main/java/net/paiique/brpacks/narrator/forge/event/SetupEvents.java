@@ -1,12 +1,9 @@
 package net.paiique.brpacks.narrator.forge.event;
 
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
 import net.paiique.brpacks.narrator.NarratorMod;
 import net.paiique.brpacks.narrator.data.EventData;
 import net.paiique.brpacks.narrator.forge.network.PacketHandler;
@@ -26,12 +23,12 @@ public class SetupEvents extends EventData implements EventInterface {
                 new MobHealthEvent(),
                 new NarratorTickEvent(),
                 new PlayerChangeLevelEvent(),
-                new SleepEvent()
+                new SleepEvent(),
+                new PlayerSendMessageEvent()
         );
+
         modEvents.forEach(events -> events.register(MinecraftForge.EVENT_BUS));
-        event.enqueueWork(() -> {
-            PacketHandler.register();
-        });
+        event.enqueueWork(PacketHandler::register);
     }
 
 }

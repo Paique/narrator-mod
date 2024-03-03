@@ -14,11 +14,19 @@ public class NarratorTickEvent extends EventData implements EventInterface {
     private static final int COOLDOWN = ConfigCommon.CHECK_COOLDOWN.get();
 
     public static boolean DISABLED = false;
+
     @SubscribeEvent
     public static void onClientTick(TickEvent.ServerTickEvent event) {
-        if (event.phase == TickEvent.Phase.START && !DISABLED) {
+        if (event.phase == TickEvent.Phase.START) {
 
-            if (NarratorMod.post.lock) {
+            if (DISABLED) {
+                event.getServer().getPlayerList().getPlayers().forEach(player -> {
+                    player.sendSystemMessage(Component.literal("Verifique a key em: mods > narrator > configurações"), true);
+                });
+                return;
+            }
+
+            if (NarratorMod.postPacket.lock) {
                 event.getServer().getPlayerList().getPlayers().forEach(player -> {
                     player.sendSystemMessage(Component.literal("DEBUG: Narrador falando"), true);
                 });
@@ -26,7 +34,7 @@ public class NarratorTickEvent extends EventData implements EventInterface {
             }
 
             event.getServer().getPlayerList().getPlayers().forEach(player -> {
-                player.sendSystemMessage(Component.literal("DEBUG: Próxima verificação: " + tickCounter + "/ "+ COOLDOWN +" | Pontos de Ação: " + actionsPoints + "/" + REQUIRED_ACTIONS_POINTS), true);
+                player.sendSystemMessage(Component.literal("DEBUG: Próxima verificação: " + tickCounter + "/ " + COOLDOWN + " | Pontos de Ação: " + actionsPoints + "/" + REQUIRED_ACTIONS_POINTS), true);
             });
 
             tickCounter++;
@@ -34,7 +42,7 @@ public class NarratorTickEvent extends EventData implements EventInterface {
             if (tickCounter >= COOLDOWN) {
                 if (actionsPoints >= REQUIRED_ACTIONS_POINTS) {
                     actionsPoints = 0;
-                    NarratorMod.post.start();
+                    NarratorMod.postPacket.start();
                 }
                 tickCounter = 0;
             }

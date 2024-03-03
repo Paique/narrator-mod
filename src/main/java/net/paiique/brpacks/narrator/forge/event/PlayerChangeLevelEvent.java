@@ -1,8 +1,10 @@
 package net.paiique.brpacks.narrator.forge.event;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -44,8 +46,9 @@ public class PlayerChangeLevelEvent extends EventData implements EventInterface 
     @SubscribeEvent
     public static void onBlockBreakEvent(BlockEvent.BreakEvent event) {
         if (event.getPlayer().level().isClientSide) return;
-        System.out.println(lastPlacedBlockPos + " : " + event.getPos());
-        System.out.println(event.getPlayer().getName().getString() + " quebrou um(a) " + event.getState().getBlock().getName().getString() + " do chão" + (lastPlacedBlockPos.equals(event.getPos()) && !lastPlacedBlockName.isBlank() ? " onde ele havia colocado o bloco " + lastPlacedBlockName + " anteriormente." : "."));
+        ItemStack item = event.getPlayer().getPickResult();
+        if (item == null) return;
+        System.out.println(Component.translatable(item.getDisplayName().getString()));
         NarratorMod.data.actualAiText.add(event.getPlayer().getName().getString() + " quebrou um(a) " + event.getState().getBlock().getName().getString() + " do chão" + (lastPlacedBlockPos.equals(event.getPos()) && !lastPlacedBlockName.isBlank() ? " onde ele havia colocado o bloco " + lastPlacedBlockName + " anteriormente." : "."));
         lastBreakedBlockPos = event.getPos();
         lastBreakedBlockName = event.getState().getBlock().getName().getString();
@@ -54,10 +57,8 @@ public class PlayerChangeLevelEvent extends EventData implements EventInterface 
 
     @SubscribeEvent
     public static void onBlockPlaceEvent(BlockEvent.EntityPlaceEvent event) {
-        if (event.getEntity().level().isClientSide) return;
+        if (event.getLevel().isClientSide()) return;
         if (!(event.getEntity() instanceof Player)) return;
-        System.out.println(lastBreakedBlockPos + " : " + event.getPos());
-        System.out.println(event.getEntity().getName().getString() + " colocou um(a) " + event.getState().getBlock().getName().getString() + " no chão" + (lastBreakedBlockPos.equals(event.getPos()) && !lastBreakedBlockName.isBlank() ? " onde ele havia quebrado o bloco " + lastBreakedBlockName + " anteriormente." : "."));
         NarratorMod.data.actualAiText.add(event.getEntity().getName().getString() + " colocou um(a) " + event.getState().getBlock().getName().getString() + " no chão" + (lastBreakedBlockPos.equals(event.getPos()) && !lastBreakedBlockName.isBlank() ? " onde ele havia quebrado o bloco " + lastBreakedBlockName + " anteriormente." : "."));
         lastPlacedBlockPos = event.getPos();
         lastPlacedBlockName = event.getState().getBlock().getName().getString();
@@ -73,7 +74,7 @@ public class PlayerChangeLevelEvent extends EventData implements EventInterface 
 
     @SubscribeEvent
     public static void onInteractEvent(PlayerInteractEvent.RightClickBlock event) {
-        if (event.getLevel().isClientSide) return;
+        if (event.getEntity().level().isClientSide) return;
         if (event.getHand() != InteractionHand.MAIN_HAND) return;
         Block block = event.getEntity().level().getBlockState(event.getPos()).getBlock();
         if (!NarratorMod.data.iterableBlocks.contains(block)) return;

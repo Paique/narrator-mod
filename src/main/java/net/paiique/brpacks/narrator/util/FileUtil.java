@@ -3,7 +3,7 @@ package net.paiique.brpacks.narrator.util;
 import java.io.*;
 import java.nio.file.Path;
 
-public class ConvertToByteArray {
+public class FileUtil {
     public byte[] convertToByteArray(File audioFile) {
 
         try {

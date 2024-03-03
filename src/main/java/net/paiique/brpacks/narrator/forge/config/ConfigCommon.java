@@ -10,7 +10,7 @@ public class ConfigCommon {
     public static final ForgeConfigSpec.ConfigValue<String> VOICE_MODEL;
     public static final ForgeConfigSpec.ConfigValue<String> VOICE;
     public static final ForgeConfigSpec.ConfigValue<Boolean> DEBUG_MODE;
-    public static final ForgeConfigSpec.ConfigValue<Float> NARRATOR_VOLUME;
+    public static final ForgeConfigSpec.ConfigValue<Integer> NARRATOR_VOLUME;
     public static final ForgeConfigSpec.ConfigValue<Float> NARRATOR_RATE;
     public static final ForgeConfigSpec.ConfigValue<Integer> REQUIRED_ACTIONS_POINTS;
     public static final ForgeConfigSpec.ConfigValue<Integer> CHECK_COOLDOWN;
@@ -31,8 +31,8 @@ public class ConfigCommon {
         VOICE = BUILDER.comment("Voice (String)")
                 .define("voice", "onyx");
 
-        NARRATOR_VOLUME = BUILDER.comment("Narrator Volume Percentage (Float)")
-                .define("narrator_volume", 100.0f);
+        NARRATOR_VOLUME = BUILDER.comment("Narrator Volume Percentage (Int)")
+                .define("narrator_volume", 100);
 
         NARRATOR_RATE = BUILDER.comment("Narrator Rate (Float)")
                 .define("narrator_rate", 1.0f);

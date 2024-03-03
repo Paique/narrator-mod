@@ -6,46 +6,44 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.Getter;
 import lombok.SneakyThrows;
-import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.Component;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.paiique.brpacks.narrator.NarratorMod;
 import net.paiique.brpacks.narrator.forge.config.ConfigCommon;
 import net.paiique.brpacks.narrator.forge.event.NarratorTickEvent;
 import net.paiique.brpacks.narrator.forge.network.PacketHandler;
 import net.paiique.brpacks.narrator.forge.network.SCPlaySoundPacket;
-import net.paiique.brpacks.narrator.util.AudioConverter;
-import net.paiique.brpacks.narrator.util.Auudio;
-import net.paiique.brpacks.narrator.util.ConvertToByteArray;
+import net.paiique.brpacks.narrator.forge.util.BulkPlayerMessage;
+import net.paiique.brpacks.narrator.util.FileUtil;
 import org.jetbrains.annotations.NotNull;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author paique
  * @version 1.7
  */
 
-public class Post extends Thread {
-    private final String token = "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";
-
+public class PostAndSendPacket extends Thread {
     @Getter
     private LinkedList<String> actualAiText = NarratorMod.data.actualAiText;
     private StringBuilder prompt = new StringBuilder();
-
     public boolean lock = false;
-
     public boolean firstChat = true;
+    private String token;
 
     @Override
     public void run() {
         if (lock) return;
         lock = true;
+        token = ConfigCommon.OPENAI_API_KEY.get();
         playerActions();
-        NarratorMod.post = new Post();
+        NarratorMod.postPacket = new PostAndSendPacket();
     }
 
     private void playerActions() {
@@ -78,9 +76,14 @@ public class Post extends Thread {
             resp = resp.replaceAll("[\\r\\n]+", " ").replaceAll("['\\[\\](){}]", "");
             textToSpeech(resp);
         } catch (Exception e) {
-            Minecraft.getInstance().player.sendSystemMessage(Component.literal("Erro ao se conectar com a OpenAI, por favor, verifique sua chave de API."));
-            Minecraft.getInstance().player.sendSystemMessage(Component.literal("§cErro: " + e.getMessage()));
-            Minecraft.getInstance().player.sendSystemMessage(Component.literal("§fAcha que isto foi um erro temporário como um erro de conexão? \n Reative seu querido narrador com o /narrator para tentar novamente"));
+            List<String> messages = new ArrayList<>();
+            messages.add("Erro ao se conectar com a OpenAI, por favor, verifique sua chave de API.");
+            messages.add("Narrator tick event foi desativado.");
+            messages.add("Erro: " + e.getMessage());
+            messages.add("Acha que isto foi um erro temporário como um erro de conexão, ou corrigiu a sua chave de API?");
+            messages.add("Reative o narrador com o /narrador para tentar novamente!");
+            messages.add(token);
+            BulkPlayerMessage.sendMessage(messages);
             NarratorTickEvent.DISABLED = true;
         }
     }
@@ -111,7 +114,10 @@ public class Post extends Thread {
         JsonArray messagesArray = new JsonArray();
         JsonObject systemMessage = new JsonObject();
         systemMessage.addProperty("role", "system");
-        systemMessage.addProperty("content", "Você é um narrador de Minecraft, e deve narrar as ações do jogador, e guiar as ações dele como no jogo 'Stanley Parable' e julgue/insulte/elogie ele maneira bem sutil de vez em quando.");
+        if (FMLEnvironment.dist.isClient())
+            systemMessage.addProperty("content", "Você é um narrador de Minecraft, e deve narrar as ações do jogador, e guiar as ações dele como no jogo 'Stanley Parable' e julgue/insulte/elogie ele maneira bem sutil de vez em quando.");
+        else
+            systemMessage.addProperty("content", "Você é um narrador de Minecraft, e deve narrar as ações dos jogadores do servidor, e guiar as ações deles como no jogo 'Stanley Parable' e os julgue/insulte/elogie maneira bem sutil de vez em quando. (Todos irão lhe escutar ao mesmo tempo como uma voz onipresente)");
         messagesArray.add(systemMessage);
         JsonObject userMessage = new JsonObject();
         userMessage.addProperty("role", "user");
@@ -136,7 +142,7 @@ public class Post extends Thread {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("model", ConfigCommon.VOICE_MODEL.get());
         jsonObject.addProperty("input", text);
-        jsonObject.addProperty("response_format", "mp3");
+        jsonObject.addProperty("response_format", "wav");
         jsonObject.addProperty("voice", ConfigCommon.VOICE.get());
 
         String jsonString = new Gson().toJson(jsonObject);
@@ -151,16 +157,12 @@ public class Post extends Thread {
         BufferedInputStream in = new BufferedInputStream(con.getInputStream());
         audioData = in.readAllBytes();
 
-        FileOutputStream fos = new FileOutputStream("output.mp3");
-        fos.write(audioData);
-        File filePath = new File("output.mp3");
+        //FileOutputStream fos = new FileOutputStream("output.wav");
+        //fos.write(audioData);
 
-        AudioConverter.convert(filePath.toPath());
-        ConvertToByteArray soundFile = new ConvertToByteArray();
-        byte[] audioBytes = soundFile.convertToByteArray(new File("output.ogg"));
-        if (audioBytes == null) return;
-        PacketHandler.sendToAllClients(new SCPlaySoundPacket(audioBytes));
-        //new Auudio().play(new File("output.ogg").);
+
+        if (audioData == null) return;
+        PacketHandler.sendToAllClients(new SCPlaySoundPacket(audioData));
         lock = false;
     }
 }

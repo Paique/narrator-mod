@@ -1,8 +1,13 @@
 {
+  "required": false,
+  "minVersion": "0.8.5",
   "compatibilityLevel": "JAVA_17",
   "package": "net.paiique.brpacks.narrator.forge.mixins",
   "refmap": "refmap.narrator.json",
   "mixins": [],
   "client": ["MenuMixin"],
-  "server": []
+  "server": [],
+  "injectors": {
+  "defaultRequire": 1
+  }
 }

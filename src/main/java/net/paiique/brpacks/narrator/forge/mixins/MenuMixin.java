@@ -11,6 +11,7 @@ import net.minecraft.client.gui.screens.worldselection.SelectWorldScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.client.gui.ModListScreen;
 import net.minecraftforge.client.gui.TitleScreenModUpdateIndicator;
+import net.minecraftforge.common.MinecraftForge;
 import net.paiique.brpacks.narrator.forge.config.ConfigCommon;
 import net.paiique.brpacks.narrator.forge.menu.OpenAiKeyErrorScreen;
 import org.spongepowered.asm.mixin.Mixin;
@@ -20,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(TitleScreen.class)
+@Mixin(value = TitleScreen.class)
 public abstract class MenuMixin extends Screen {
 
     @Shadow
@@ -28,7 +29,7 @@ public abstract class MenuMixin extends Screen {
     @Shadow
     protected abstract void init();
 
-    @Shadow
+    @Shadow(remap = false)
     private TitleScreenModUpdateIndicator modUpdateNotification = null;
 
     protected MenuMixin(Component p_96550_) {
@@ -84,6 +85,7 @@ public abstract class MenuMixin extends Screen {
 
     @Inject(method = "createNormalMenuOptions", at = @At("HEAD"), cancellable = true)
     private void createNormalMenuOptions(int p_96764_, int p_96765_, CallbackInfo ci) {
+        
         ci.cancel();
 
         if (ConfigCommon.OPENAI_API_KEY.get().equals("CHANGE_ME")) {
