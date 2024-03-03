@@ -11,12 +11,10 @@ import net.paiique.brpacks.narrator.util.FileUtil;
 
 
 public class NarratorClient {
-
-    public static FileUtil fileUtil;
     public static Auudio auudio;
 
     public void onCtorClient(IEventBus modEventBus, IEventBus forgeEventBus) {
-        fileUtil = new FileUtil();
+
         auudio = new Auudio();
         registerScreens();
     }

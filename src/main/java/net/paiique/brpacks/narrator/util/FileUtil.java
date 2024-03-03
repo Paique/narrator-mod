@@ -1,14 +1,15 @@
 package net.paiique.brpacks.narrator.util;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class FileUtil {
-    public byte[] convertToByteArray(File audioFile) {
+    public byte[] convertToByteArray(Path audioFile) {
 
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
-            BufferedInputStream in = new BufferedInputStream(new FileInputStream(audioFile));
+            BufferedInputStream in = new BufferedInputStream(new FileInputStream(audioFile.toFile()));
 
             int read;
             byte[] buff = new byte[1024];
@@ -17,7 +18,7 @@ public class FileUtil {
             }
             out.flush();
             in.close();
-            audioFile.delete();
+            Files.delete(audioFile);
             return out.toByteArray();
         } catch (Exception e) {
             e.printStackTrace();

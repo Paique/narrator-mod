@@ -79,7 +79,7 @@ COPYRIGHT:
     side="BOTH"
 
     [[dependencies.${mod_id}]]
-    modId="melody"
+    modId="auudio"
     mandatory=true
     versionRange="[1.0.2,)"
     ordering="NONE"

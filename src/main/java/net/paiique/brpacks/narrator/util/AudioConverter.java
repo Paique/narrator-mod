@@ -1,4 +1,4 @@
-/*
+
 package net.paiique.brpacks.narrator.util;
 
 import ws.schild.jave.*;
@@ -26,11 +26,9 @@ public class AudioConverter {
         Encoder encoder = new Encoder();
         try {
             encoder.encode(new MultimediaObject(source), target, encodingAttributes);
-            source.delete();
             System.out.println("Conversion successful!");
         } catch (EncoderException e) {
             System.err.println("Error during conversion: " + e.getMessage());
         }
     }
 }
-*/

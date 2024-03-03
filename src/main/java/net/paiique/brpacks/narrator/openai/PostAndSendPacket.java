@@ -7,12 +7,14 @@ import com.google.gson.JsonParser;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.paiique.brpacks.narrator.NarratorClient;
 import net.paiique.brpacks.narrator.NarratorMod;
 import net.paiique.brpacks.narrator.forge.config.ConfigCommon;
 import net.paiique.brpacks.narrator.forge.event.NarratorTickEvent;
 import net.paiique.brpacks.narrator.forge.network.PacketHandler;
 import net.paiique.brpacks.narrator.forge.network.SCPlaySoundPacket;
 import net.paiique.brpacks.narrator.forge.util.BulkPlayerMessage;
+import net.paiique.brpacks.narrator.util.AudioConverter;
 import net.paiique.brpacks.narrator.util.FileUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,6 +22,8 @@ import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -142,7 +146,7 @@ public class PostAndSendPacket extends Thread {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("model", ConfigCommon.VOICE_MODEL.get());
         jsonObject.addProperty("input", text);
-        jsonObject.addProperty("response_format", "wav");
+        jsonObject.addProperty("response_format", "mp3");
         jsonObject.addProperty("voice", ConfigCommon.VOICE.get());
 
         String jsonString = new Gson().toJson(jsonObject);
@@ -157,11 +161,20 @@ public class PostAndSendPacket extends Thread {
         BufferedInputStream in = new BufferedInputStream(con.getInputStream());
         audioData = in.readAllBytes();
 
-        //FileOutputStream fos = new FileOutputStream("output.wav");
-        //fos.write(audioData);
+        Path path = Path.of("output.mp3");
+        FileOutputStream fos = new FileOutputStream(path.toFile());
+        fos.write(audioData);
+        in.close();
+        fos.close();
 
+        AudioConverter.convert(path);
+        Files.delete(path);
 
-        if (audioData == null) return;
+        path = Path.of("output.ogg");
+        System.out.println("Audio File" + path.getFileName().toString());
+        audioData = NarratorMod.fileUtil.convertToByteArray(path);
+
+        System.out.println("audiodata: " + audioData.length);
         PacketHandler.sendToAllClients(new SCPlaySoundPacket(audioData));
         lock = false;
     }
