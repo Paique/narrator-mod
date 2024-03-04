@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.mojang.logging.LogUtils;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import net.minecraftforge.fml.loading.FMLEnvironment;
@@ -13,14 +14,14 @@ import net.paiique.brpacks.narrator.forge.event.NarratorTickEvent;
 import net.paiique.brpacks.narrator.forge.network.PacketHandler;
 import net.paiique.brpacks.narrator.forge.network.SCPlaySoundPacket;
 import net.paiique.brpacks.narrator.forge.util.BulkPlayerMessage;
-import net.paiique.brpacks.narrator.util.Ffmpeg;
+import net.paiique.brpacks.narrator.util.FFmpeg;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -32,12 +33,20 @@ import java.util.List;
  */
 
 public class PostAndSendPacket extends Thread {
+
+    private static Logger LOGGER;
+
     @Getter
     private LinkedList<String> actualAiText = NarratorMod.data.actualAiText;
     private StringBuilder prompt = new StringBuilder();
     public boolean lock = false;
     public boolean firstChat = true;
     private String token;
+
+    public PostAndSendPacket() {
+        super("PostAndSendPacket");
+        LOGGER = LogUtils.getLogger();
+    }
 
     @Override
     public void run() {
@@ -58,8 +67,6 @@ public class PostAndSendPacket extends Thread {
             prompt.append(last).append("\n");
         });
 
-
-        //Get the message if an error occurs
         try {
             String chatUrl = "https://api.openai.com/v1/chat/completions";
             URL url = new URL(chatUrl);
@@ -78,6 +85,8 @@ public class PostAndSendPacket extends Thread {
             resp = resp.replaceAll("[\\r\\n]+", " ").replaceAll("['\\[\\](){}]", "");
             textToSpeech(resp);
         } catch (Exception e) {
+            LOGGER.error("Error while connecting to OpenAI API.");
+
             List<String> messages = new ArrayList<>();
             messages.add("Erro ao se conectar com a OpenAI, por favor, verifique sua chave de API.");
             messages.add("Narrator tick event foi desativado.");
@@ -117,9 +126,9 @@ public class PostAndSendPacket extends Thread {
         JsonObject systemMessage = new JsonObject();
         systemMessage.addProperty("role", "system");
         if (FMLEnvironment.dist.isClient())
-            systemMessage.addProperty("content", "Você é um narrador de Minecraft, e deve narrar as ações do jogador, e guiar as ações dele como no jogo 'Stanley Parable' e julgue/insulte/elogie ele maneira bem sutil de vez em quando.");
+            systemMessage.addProperty("content", "Você é um narrador de Minecraft, e deve narrar as ações do jogador, e guiar as ações dele como no jogo 'Stanley Parable' e julgue/insulte/elogie ele maneira bem sutil de vez em quando, mas se ele fizer besteira pode xingar ele, e parecer estressado");
         else
-            systemMessage.addProperty("content", "Você é um narrador de Minecraft, e deve narrar as ações dos jogadores do servidor, e guiar as ações deles como no jogo 'Stanley Parable' e os julgue/insulte/elogie maneira bem sutil de vez em quando. (Todos irão lhe escutar ao mesmo tempo como uma voz onipresente)");
+            systemMessage.addProperty("content", "Você é um narrador de Minecraft, e deve narrar as ações dos jogadores do servidor, e guiar as ações deles como no jogo 'Stanley Parable' e os julgue/insulte/elogie maneira bem sutil de vez em quando, mas se um deles fizer besteira pode xingar ele, e parecer estressado (Todos irão lhe escutar ao mesmo tempo como uma voz onipresente)");
         messagesArray.add(systemMessage);
         JsonObject userMessage = new JsonObject();
         userMessage.addProperty("role", "user");
@@ -165,14 +174,11 @@ public class PostAndSendPacket extends Thread {
         in.close();
         fos.close();
 
-        Ffmpeg ffmpeg = new Ffmpeg();
+        FFmpeg ffmpeg = new FFmpeg();
         ffmpeg.setFilePath(path);
         ffmpeg.setCallback(() -> {
             Path pathCall = Path.of("output.ogg");
-            System.out.println("Audio File" + pathCall.getFileName().toString());
             byte[] audioCall = NarratorMod.fileUtil.convertToByteArray(pathCall);
-
-            System.out.println("audiodata: " + audioCall.length);
             PacketHandler.sendToAllClients(new SCPlaySoundPacket(audioCall));
             lock = false;
         });

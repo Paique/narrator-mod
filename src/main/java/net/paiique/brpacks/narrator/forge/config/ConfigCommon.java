@@ -9,9 +9,7 @@ public class ConfigCommon {
     public static final ForgeConfigSpec.ConfigValue<String> CHAT_GPT_MODEL;
     public static final ForgeConfigSpec.ConfigValue<String> VOICE_MODEL;
     public static final ForgeConfigSpec.ConfigValue<String> VOICE;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> DEBUG_MODE;
     public static final ForgeConfigSpec.ConfigValue<Integer> NARRATOR_VOLUME;
-    public static final ForgeConfigSpec.ConfigValue<Float> NARRATOR_RATE;
     public static final ForgeConfigSpec.ConfigValue<Integer> REQUIRED_ACTIONS_POINTS;
     public static final ForgeConfigSpec.ConfigValue<Integer> CHECK_COOLDOWN;
 
@@ -34,22 +32,13 @@ public class ConfigCommon {
         NARRATOR_VOLUME = BUILDER.comment("Narrator Volume Percentage (Int)")
                 .define("narrator_volume", 100);
 
-        NARRATOR_RATE = BUILDER.comment("Narrator Rate (Float)")
-                .define("narrator_rate", 1.0f);
-
-        REQUIRED_ACTIONS_POINTS = BUILDER.comment("Required Actions Points (Integer)")
-                .define("required_actions_points", 300);
+        REQUIRED_ACTIONS_POINTS = BUILDER.comment("Required Action Points (Integer)")
+                .define("required_action_points", 300);
 
         CHECK_COOLDOWN = BUILDER.comment("Cooldown between checks (Integer)")
                 .define("check_every_x_ticks", 200);
 
-        DEBUG_MODE = BUILDER.comment("Debug Mode (Boolean)")
-                .define("debug_mode", false);
-
-
-
         BUILDER.pop();
         COMMON_SPEC = BUILDER.build();
     }
-
 }

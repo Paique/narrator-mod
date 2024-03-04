@@ -28,7 +28,7 @@ import java.util.Random;
 @Mod(NarratorMod.MODID)
 public class NarratorMod {
     public static final String MODID = "narrator";
-    public static final Logger LOGGER = LogUtils.getLogger();
+    private static final Logger LOGGER = LogUtils.getLogger();
 
     public static Data data;
     public static PostAndSendPacket postPacket;

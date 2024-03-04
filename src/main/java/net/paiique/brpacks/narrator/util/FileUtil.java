@@ -1,10 +1,20 @@
 package net.paiique.brpacks.narrator.util;
 
+import com.mojang.logging.LogUtils;
+import org.slf4j.Logger;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class FileUtil {
+
+    private static Logger LOGGER;
+
+    public FileUtil() {
+        LOGGER = LogUtils.getLogger();
+    }
+
     public byte[] convertToByteArray(Path audioFile) {
 
         try {
@@ -20,13 +30,13 @@ public class FileUtil {
             in.close();
             Files.delete(audioFile);
             return out.toByteArray();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            LOGGER.error("Failed to convert audio to byte array");
         }
         return null;
     }
 
-    public File convertByteArrayToFile(byte[] byteArray, Path filePath) {
+    public void convertByteArrayToFile(byte[] byteArray, Path filePath) {
         try {
             File file = filePath.toFile();
             if (file.exists()) file.delete();
@@ -34,11 +44,9 @@ public class FileUtil {
             FileOutputStream fos = new FileOutputStream(file);
             fos.write(byteArray);
             fos.close();
-            return file;
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            LOGGER.error("Failed to convert byte array to file");
         }
-        return null;
     }
 
 }
