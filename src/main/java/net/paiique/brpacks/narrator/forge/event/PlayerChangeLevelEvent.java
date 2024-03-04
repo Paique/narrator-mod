@@ -3,9 +3,11 @@ package net.paiique.brpacks.narrator.forge.event;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.EntityEvent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
@@ -21,7 +23,7 @@ import net.paiique.brpacks.narrator.interfaces.EventInterface;
 public class PlayerChangeLevelEvent extends EventData implements EventInterface {
 
     @SubscribeEvent
-    public static void onPlayerDeathEvent(PlayerEvent.PlayerRespawnEvent event) {
+    public static void onPlayerDeathEvent(LivingDeathEvent event) {
         if (event.getEntity().level().isClientSide) return;
         if (!(event.getEntity() instanceof Player)) return;
         NarratorMod.data.actualAiText.add(event.getEntity().getName().getString() + " morreu.");
@@ -46,10 +48,7 @@ public class PlayerChangeLevelEvent extends EventData implements EventInterface 
     @SubscribeEvent
     public static void onBlockBreakEvent(BlockEvent.BreakEvent event) {
         if (event.getPlayer().level().isClientSide) return;
-        ItemStack item = event.getPlayer().getPickResult();
-        if (item == null) return;
-        System.out.println(Component.translatable(item.getDisplayName().getString()));
-        NarratorMod.data.actualAiText.add(event.getPlayer().getName().getString() + " quebrou um(a) " + event.getState().getBlock().getName().getString() + " do chão" + (lastPlacedBlockPos.equals(event.getPos()) && !lastPlacedBlockName.isBlank() ? " onde ele havia colocado o bloco " + lastPlacedBlockName + " anteriormente." : "."));
+        NarratorMod.data.actualAiText.add(event.getPlayer().getName().getString() + " quebrou um(a) " + event.getState().getBlock().getName().getString() + " do chão" + (lastPlacedBlockPos.equals(event.getPos()) && !lastPlacedBlockName.isBlank() ? " onde ele havia colocado o bloco " + lastPlacedBlockName + " anteriormente. (Se for o mesmo bloco reclame com ele)" : "."));
         lastBreakedBlockPos = event.getPos();
         lastBreakedBlockName = event.getState().getBlock().getName().getString();
         actionsPoints += 10;

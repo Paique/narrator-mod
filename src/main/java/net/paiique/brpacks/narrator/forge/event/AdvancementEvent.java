@@ -12,6 +12,6 @@ public class AdvancementEvent extends EventData implements EventInterface {
         if (!(event.getEntity() instanceof Player)) return;
         if (event.getAdvancement().value().name().isEmpty()) return;
         NarratorMod.data.actualAiText.add("O jogador " + event.getEntity().getName().getString() + " obteve a conquista " + event.getAdvancement().value().name().get().getString() + ".");
-        actionsPoints += 40;
+        actionsPoints += 300;
     }
 }

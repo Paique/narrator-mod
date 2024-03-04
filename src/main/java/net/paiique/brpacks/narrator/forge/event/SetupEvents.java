@@ -15,7 +15,7 @@ import java.util.List;
 public class SetupEvents extends EventData implements EventInterface {
 
     @SubscribeEvent
-    public static void oSetup(FMLCommonSetupEvent event) {
+    public static void onSetup(FMLCommonSetupEvent event) {
         List<EventInterface> modEvents = List.of(
                 new LoginLogoutEvent(),
                 new AdvancementEvent(),

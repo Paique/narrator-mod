@@ -48,11 +48,7 @@ public class LoginLogoutEvent extends EventData implements EventInterface {
     @SubscribeEvent
     public static void onPlayerLeave(PlayerEvent.PlayerLoggedOutEvent event) {
         if (event.getEntity().level().isClientSide) return;
-        if (FMLEnvironment.dist.isDedicatedServer()) {
+        if (FMLEnvironment.dist.isDedicatedServer())
             disconnectedPlayers.put(event.getEntity().getUUID(), "O jogador " + event.getEntity().getName().getString() + " se desconectou do servidor as " + DateUtil.getActualDate() + ", e se reconectou agora as ");
-            return;
-        }
-        NarratorMod.postPacket.start();
-        actionsPoints = 0;
     }
 }

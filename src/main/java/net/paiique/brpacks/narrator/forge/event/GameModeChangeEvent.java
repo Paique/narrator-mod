@@ -14,7 +14,6 @@ import net.paiique.brpacks.narrator.interfaces.EventInterface;
 public class GameModeChangeEvent extends EventData implements EventInterface {
     @SubscribeEvent
     public static void onGameModeChange(PlayerEvent.PlayerChangeGameModeEvent event) {
-        if (FMLEnvironment.dist.isClient()) return;
         NarratorMod.data.actualAiText.add("O jogador " + event.getEntity().getName().getString() + " mudou de modo de jogo para " + event.getNewGameMode().getName() + ", estaria ele trapaceando?");
         actionsPoints += 20;
     }
