@@ -13,16 +13,13 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 
+@Setter
 public class FFmpeg extends Thread {
 
-    @Setter
     Path filePath;
-
-    @Setter
     Runnable callback;
 
     private static String ffmpegExec = "";
-
     private static Logger LOGGER;
 
     public FFmpeg() {
@@ -39,7 +36,6 @@ public class FFmpeg extends Thread {
 
     public static void convert(Path filePath) {
         try {
-
             String operatingSys = System.getProperty("os.name").toLowerCase();
             if (operatingSys.contains("mac")) throw new Exception("MacOS it's not supported");
             if (operatingSys.contains("windows")) ffmpegExec = "ffmpeg-win-x64.exe";
@@ -52,9 +48,9 @@ public class FFmpeg extends Thread {
             if (target.exists()) target.delete();
             File ffmpeg = new File(ffmpegExec);
 
-            if (!ffmpeg.exists()) copyFFmpeg();
+            if (!ffmpeg.exists()) copyFfmpeg();
 
-            ProcessBuilder processBuilder = new ProcessBuilder(ffmpeg.getAbsolutePath(), "-i", source.getAbsolutePath(), "-c:a", "libvorbis", "-b:a", "64k", target.getPath());
+            ProcessBuilder processBuilder = new ProcessBuilder(ffmpeg.getAbsolutePath(), "-y", "-i", source.getAbsolutePath(), "-preset", "ultrafast" , "-c:a", "libvorbis", "-b:a", "64k", target.getPath());
             processBuilder.inheritIO();
             processBuilder.start().waitFor();
         } catch (Exception e) {
@@ -62,7 +58,7 @@ public class FFmpeg extends Thread {
         }
     }
 
-    private static void copyFFmpeg() {
+    private static void copyFfmpeg() {
         try {
             ClassLoader classloader = Thread.currentThread().getContextClassLoader();
             InputStream is = classloader.getResourceAsStream("ffmpeg/" + ffmpegExec);

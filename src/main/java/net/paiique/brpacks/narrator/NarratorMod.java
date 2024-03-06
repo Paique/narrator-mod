@@ -11,7 +11,6 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.paiique.brpacks.narrator.data.Data;
 import net.paiique.brpacks.narrator.forge.config.ConfigCommon;
-import net.paiique.brpacks.narrator.openai.PostAndSendPacket;
 import net.paiique.brpacks.narrator.util.FileUtil;
 import org.slf4j.Logger;
 
@@ -31,7 +30,6 @@ public class NarratorMod {
     private static final Logger LOGGER = LogUtils.getLogger();
 
     public static Data data;
-    public static PostAndSendPacket postPacket;
     public static Random random;
 
     public static FileUtil fileUtil;
@@ -44,7 +42,6 @@ public class NarratorMod {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
         data = new Data();
-        postPacket = new PostAndSendPacket();
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> new NarratorClient().onCtorClient(modEventBus, forgeEventBus));
     }
 }

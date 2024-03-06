@@ -1,14 +1,14 @@
-package net.paiique.brpacks.narrator.forge.event;
+package net.paiique.brpacks.narrator.forge.event.server;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.paiique.brpacks.narrator.NarratorMod;
-import net.paiique.brpacks.narrator.data.EventData;
+import net.paiique.brpacks.narrator.data.Data;
 import net.paiique.brpacks.narrator.interfaces.EventInterface;
 
-public class PlayerSendMessageEvent extends EventData implements EventInterface {
+public class PlayerSendMessageEvent extends Data implements EventInterface {
 
     @SubscribeEvent
     public static void onPlayerSendMessageEvent(ServerChatEvent event) {
@@ -21,9 +21,8 @@ public class PlayerSendMessageEvent extends EventData implements EventInterface 
             event.getPlayer().sendSystemMessage(Component.literal("Mensagem muito longa, minimo de 200 caracteres para o Narrador registrar!").withStyle(ChatFormatting.RED));
             return;
         }
-
-        NarratorMod.postPacket.getActualAiText().add(username + " disse no chat: " + message);
-        actionsPoints += 1;
+        actualAiText.add("O jogador " + username + " disse: " + message + ". {enorme}");
+        actionsPoints += 300;
     }
 
 }

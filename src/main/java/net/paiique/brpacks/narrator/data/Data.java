@@ -6,17 +6,26 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author paique
  * @version 1.0
  */
 @Getter
-@Setter
 public class Data {
-    public LinkedList<String> actualAiText = new LinkedList<>();
+    public static LinkedList<String> actualAiText = new LinkedList<>();
+    protected static boolean narratorThreadLock = false;
+
+    protected static int actionsPoints = 0;
+    protected static int messageCooldown = 0;
+    protected static BlockPos lastPlacedBlockPos = new BlockPos(0, 1256, 0);
+    protected static BlockPos lastBreakedBlockPos = new BlockPos(0, 1256, 0);
+    protected static String lastPlacedBlockName;
+    protected static String lastBreakedBlockName;
+    protected static boolean firstLogin = true;
+    protected static Map<UUID, String> disconnectedPlayers = new HashMap<>();
+
 
     public List<Block> iterableBlocks = List.of(
             Blocks.ACACIA_DOOR,

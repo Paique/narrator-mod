@@ -1,16 +1,19 @@
-package net.paiique.brpacks.narrator.forge.event;
+package net.paiique.brpacks.narrator.forge.event.server;
 
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.paiique.brpacks.narrator.NarratorClient;
 import net.paiique.brpacks.narrator.NarratorMod;
-import net.paiique.brpacks.narrator.data.EventData;
+import net.paiique.brpacks.narrator.data.Data;
+import net.paiique.brpacks.narrator.forge.audio.Auudio;
 import net.paiique.brpacks.narrator.forge.config.ConfigCommon;
 import net.paiique.brpacks.narrator.interfaces.EventInterface;
+import net.paiique.brpacks.narrator.openai.NarrationThread;
 
-public class NarratorTickEvent extends EventData implements EventInterface {
+public class NarratorTickEvent extends Data implements EventInterface {
     private static int tickCounter = 0;
-    private static final int REQUIRED_ACTIONS_POINTS = ConfigCommon.REQUIRED_ACTIONS_POINTS.get();
+    private static int REQUIRED_ACTIONS_POINTS = ConfigCommon.REQUIRED_ACTIONS_POINTS.get();
     private static final int COOLDOWN = ConfigCommon.CHECK_COOLDOWN.get();
 
     public static boolean DISABLED = false;
@@ -26,9 +29,9 @@ public class NarratorTickEvent extends EventData implements EventInterface {
                 return;
             }
 
-            if (NarratorMod.postPacket.lock) {
+            if (narratorThreadLock) {
                 event.getServer().getPlayerList().getPlayers().forEach(player -> {
-                    player.sendSystemMessage(Component.literal("DEBUG: Narrador falando"), true);
+                    player.sendSystemMessage(Component.literal("DEBUG: Thread do narrador executando"), true);
                 });
                 return;
             }
@@ -42,7 +45,7 @@ public class NarratorTickEvent extends EventData implements EventInterface {
             if (tickCounter >= COOLDOWN) {
                 if (actionsPoints >= REQUIRED_ACTIONS_POINTS) {
                     actionsPoints = 0;
-                    NarratorMod.postPacket.start();
+                    new NarrationThread().start();
                 }
                 tickCounter = 0;
             }

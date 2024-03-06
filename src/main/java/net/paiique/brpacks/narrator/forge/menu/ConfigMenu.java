@@ -3,16 +3,11 @@ package net.paiique.brpacks.narrator.forge.menu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.screens.ConfirmLinkScreen;
-import net.minecraft.client.gui.screens.CreditsAndAttributionScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.paiique.brpacks.narrator.forge.config.ConfigCommon;
-import net.paiique.brpacks.narrator.forge.event.NarratorTickEvent;
-
-import java.awt.*;
-import java.net.URL;
+import net.paiique.brpacks.narrator.forge.event.server.NarratorTickEvent;
 
 public class ConfigMenu extends Screen {
 

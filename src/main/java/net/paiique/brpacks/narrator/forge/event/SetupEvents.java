@@ -5,14 +5,16 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.paiique.brpacks.narrator.NarratorMod;
-import net.paiique.brpacks.narrator.data.EventData;
+import net.paiique.brpacks.narrator.data.Data;
+import net.paiique.brpacks.narrator.forge.event.server.AdvancementEvent;
+import net.paiique.brpacks.narrator.forge.event.server.*;
 import net.paiique.brpacks.narrator.forge.network.PacketHandler;
 import net.paiique.brpacks.narrator.interfaces.EventInterface;
 
 import java.util.List;
 
 @Mod.EventBusSubscriber(modid = NarratorMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class SetupEvents extends EventData implements EventInterface {
+public class SetupEvents extends Data implements EventInterface {
 
     @SubscribeEvent
     public static void onSetup(FMLCommonSetupEvent event) {
