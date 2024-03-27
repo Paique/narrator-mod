@@ -5,10 +5,9 @@ import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.server.ServerLifecycleHooks;
-import net.paiique.brpacks.narrator.NarratorMod;
 import net.paiique.brpacks.narrator.data.Data;
 import net.paiique.brpacks.narrator.forge.commands.SlashNarrator;
-import net.paiique.brpacks.narrator.interfaces.EventInterface;
+import net.paiique.brpacks.narrator.forge.event.interfaces.EventInterface;
 import net.paiique.brpacks.narrator.util.DateUtil;
 
 /**
@@ -27,7 +26,7 @@ public class LoginLogoutEvent extends Data implements EventInterface {
             if (disconnectedPlayers.containsKey(event.getEntity().getUUID())) {
                 actualAiText.add(disconnectedPlayers.get(event.getEntity().getUUID()) + "O jogador retornou as " + DateUtil.getActualDate() + "(o julgue dependendo do tempo que ele demorou para retornar, se foi muito rápido provavelmente ele só caiu do servidor, qualquer coisa além de 20 minutos é bastante. Existem " + (players - 1) + " jogadores conectados no servidor além dele) {médio}.");
             } else {
-                actualAiText.add("O jogador " + event.getEntity().getName().getString() + " entrou no servidor pela a primeira vez, ou após o servidor reiniciar, você não sabe quais das situações ocorreu, mas dê boas vindas a ele. (Existem" + (players - 1) + " jogadores no servidor além dele) {médio}.");
+                actualAiText.add("O jogador " + event.getEntity().getName().getString() + " entrou no servidor pela a primeira vez, ou após o servidor reiniciar, você não sabe quais das situações ocorreu, mas dê boas vindas a ele. (Existem " + (players - 1) + " jogadores no servidor além dele) {médio}.");
             }
             disconnectedPlayers.remove(event.getEntity().getUUID());
             actionsPoints += 30;

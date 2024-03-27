@@ -4,15 +4,15 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.paiique.brpacks.narrator.NarratorMod;
 import net.paiique.brpacks.narrator.data.Data;
-import net.paiique.brpacks.narrator.interfaces.EventInterface;
+import net.paiique.brpacks.narrator.forge.event.interfaces.EventInterface;
 
 public class SleepEvent extends Data implements EventInterface {
     @SubscribeEvent
     public static void onSleepEvent(PlayerSleepInBedEvent event) {
         if (event.getEntity().level().isClientSide) return;
-        System.out.println(event.getResultStatus());
+        System.out.println(event.getEntity().level().getDayTime());
+        if (event.getEntity().level().isDay()) return;
         actualAiText.add(event.getEntity().getName().getString() + " deitou na cama. {pequeno}");
         actionsPoints += 100;
     }

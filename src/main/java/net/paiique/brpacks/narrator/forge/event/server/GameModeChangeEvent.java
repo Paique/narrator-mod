@@ -2,9 +2,8 @@ package net.paiique.brpacks.narrator.forge.event.server;
 
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.paiique.brpacks.narrator.NarratorMod;
 import net.paiique.brpacks.narrator.data.Data;
-import net.paiique.brpacks.narrator.interfaces.EventInterface;
+import net.paiique.brpacks.narrator.forge.event.interfaces.EventInterface;
 
 /**
  * @author paique

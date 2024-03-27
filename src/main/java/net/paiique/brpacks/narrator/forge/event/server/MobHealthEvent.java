@@ -5,9 +5,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.paiique.brpacks.narrator.NarratorMod;
 import net.paiique.brpacks.narrator.data.Data;
-import net.paiique.brpacks.narrator.interfaces.EventInterface;
+import net.paiique.brpacks.narrator.forge.event.interfaces.EventInterface;
 
 public class MobHealthEvent extends Data implements EventInterface {
 

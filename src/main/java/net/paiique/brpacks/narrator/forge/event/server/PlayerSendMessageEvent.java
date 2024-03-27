@@ -4,9 +4,8 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.paiique.brpacks.narrator.NarratorMod;
 import net.paiique.brpacks.narrator.data.Data;
-import net.paiique.brpacks.narrator.interfaces.EventInterface;
+import net.paiique.brpacks.narrator.forge.event.interfaces.EventInterface;
 
 public class PlayerSendMessageEvent extends Data implements EventInterface {
 

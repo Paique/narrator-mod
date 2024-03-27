@@ -1,4 +1,4 @@
-package net.paiique.brpacks.narrator.interfaces;
+package net.paiique.brpacks.narrator.forge.event.interfaces;
 
 import com.mojang.logging.LogUtils;
 import net.minecraftforge.eventbus.api.IEventBus;

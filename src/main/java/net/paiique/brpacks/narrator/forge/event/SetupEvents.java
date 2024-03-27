@@ -9,7 +9,7 @@ import net.paiique.brpacks.narrator.data.Data;
 import net.paiique.brpacks.narrator.forge.event.server.AdvancementEvent;
 import net.paiique.brpacks.narrator.forge.event.server.*;
 import net.paiique.brpacks.narrator.forge.network.PacketHandler;
-import net.paiique.brpacks.narrator.interfaces.EventInterface;
+import net.paiique.brpacks.narrator.forge.event.interfaces.EventInterface;
 
 import java.util.List;
 
