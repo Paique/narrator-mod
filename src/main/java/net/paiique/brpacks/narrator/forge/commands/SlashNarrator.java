@@ -7,7 +7,9 @@ import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.paiique.brpacks.narrator.data.Data;
+import net.paiique.brpacks.narrator.forge.config.ConfigCommon;
 import net.paiique.brpacks.narrator.forge.event.server.NarratorTickEvent;
+import net.paiique.brpacks.narrator.openai.NarrationGenerator;
 
 public class SlashNarrator extends Data {
 
@@ -26,6 +28,7 @@ public class SlashNarrator extends Data {
             player.sendSystemMessage(Component.literal("O narrador já está ativado!"));
             return 1;
         }
+        ConfigCommon.OPENAI_API_KEY.save();
         NarratorTickEvent.DISABLED = false;
         narratorThreadLock = false;
         actualAiText.add("O narrador foi reativado após um problema técnico (literalmente), reclame sobre o usuário não ter configurado corretamente.");
