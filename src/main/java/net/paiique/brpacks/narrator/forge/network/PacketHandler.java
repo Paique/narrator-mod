@@ -1,7 +1,6 @@
 package net.paiique.brpacks.narrator.forge.network;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.ChannelBuilder;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.PacketDistributor;
@@ -22,6 +21,13 @@ public class PacketHandler {
                 .encoder(SCPlaySoundPacket::encode)
                 .decoder(SCPlaySoundPacket::new)
                 .consumerMainThread(SCPlaySoundPacket::handle)
+                .add();
+
+        INSTANCE.messageBuilder(CSSetupOpenAIKey.class,
+                NetworkDirection.PLAY_TO_SERVER)
+                .encoder(CSSetupOpenAIKey::encode)
+                .decoder(CSSetupOpenAIKey::new)
+                .consumerMainThread(CSSetupOpenAIKey::handle)
                 .add();
     }
 
