@@ -50,7 +50,7 @@ public class FFmpeg extends Thread {
 
             if (!ffmpeg.exists()) copyFfmpeg();
 
-            ProcessBuilder processBuilder = new ProcessBuilder(ffmpeg.getAbsolutePath(), "-y", "-i", source.getAbsolutePath(), "-preset", "ultrafast" , "-c:a", "libvorbis", "-b:a", "64k", target.getPath());
+            ProcessBuilder processBuilder = new ProcessBuilder(ffmpeg.getAbsolutePath(), "-y", "-i", source.getAbsolutePath(), "-c:a", "libvorbis", "-b:a", "64k", target.getPath());
             processBuilder.inheritIO();
             processBuilder.start().waitFor();
         } catch (Exception e) {
