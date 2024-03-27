@@ -93,19 +93,15 @@ public abstract class MenuMixin extends Screen {
                 this.minecraft.setScreen(new OpenAiKeyErrorScreen());
             }).bounds(widthCenter, heightCenter - 2, 200, 20).build()).setTooltip(narratorMod$apiKeytooltip);
 
-            this.addRenderableWidget(Button.builder(Component.translatable("menu.multiplayer"), (p_280833_) -> {
-                this.minecraft.setScreen(new OpenAiKeyErrorScreen());
-            }).bounds(widthCenter, heightCenter + 20, 200, 20).build()).setTooltip(narratorMod$apiKeytooltip2);
-
         } else {
             this.addRenderableWidget(Button.builder(Component.translatable("menu.singleplayer"), (p_280833_) -> {
                 this.minecraft.setScreen(new SelectWorldScreen(this));
             }).bounds(widthCenter, heightCenter - 2, 200, 20).build());
-
-            this.addRenderableWidget(Button.builder(Component.translatable("menu.multiplayer"), (p_280833_) -> {
-                this.minecraft.setScreen(new JoinMultiplayerScreen(this));
-            }).bounds(widthCenter, heightCenter + 20, 200, 20).build());
         }
+
+        this.addRenderableWidget(Button.builder(Component.translatable("menu.multiplayer"), (p_280833_) -> {
+            this.minecraft.setScreen(new JoinMultiplayerScreen(this));
+        }).bounds(widthCenter, heightCenter + 20, 200, 20).build());
 
         this.addRenderableWidget(Button.builder(Component.translatable("options.language"), (p_280833_) -> {
             this.minecraft.setScreen(new LanguageSelectScreen(this, this.minecraft.options, this.minecraft.getLanguageManager()));
