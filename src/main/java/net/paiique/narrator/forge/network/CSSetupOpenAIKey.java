@@ -29,7 +29,6 @@ public class CSSetupOpenAIKey {
     public void handle(CustomPayloadEvent.Context context) {
         try {
             LOGGER.info("Api packet received");
-            System.out.println(context.getDirection());
             if (stringByteArray == null) return;
             ConfigCommon.OPENAI_API_KEY.set(new String(stringByteArray));
             ConfigCommon.OPENAI_API_KEY.save();

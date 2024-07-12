@@ -46,8 +46,7 @@ logoFile="mod-logo.png"
 # The description text for the mod (multi line!) (#mandatory)
 description='''${mod_description}
 
-> Narrator © 2024 Paique/Brpacks.
-A revenda venda deste mod é estritamente proibida sem permissão.
+> Narrator © 2024 Paique.
 Narrator is licensed under GNU GPLv3.
 '''
 
@@ -77,9 +76,9 @@ Narrator is licensed under GNU GPLv3.
     side="BOTH"
 
     [[dependencies.${mod_id}]]
-    modId="auudio"
+    modId="melody"
     mandatory=true
-    versionRange="[1.0.3,)"
+    versionRange="[0,)"
     ordering="NONE"
     side="CLIENT"
 

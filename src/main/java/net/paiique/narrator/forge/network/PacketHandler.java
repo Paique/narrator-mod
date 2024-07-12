@@ -1,15 +1,15 @@
-package net.paiique.brpacks.narrator.forge.network;
+package net.paiique.narrator.forge.network;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.ChannelBuilder;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.SimpleChannel;
-import net.paiique.brpacks.narrator.NarratorMod;
+import net.paiique.narrator.NarratorMod;
 
 public class PacketHandler {
     private static final SimpleChannel INSTANCE = ChannelBuilder.named(
-            new ResourceLocation(NarratorMod.MODID, "main"))
+            ResourceLocation.fromNamespaceAndPath(NarratorMod.MODID, "main"))
             .serverAcceptedVersions((status, version) -> true)
             .clientAcceptedVersions((status, version) -> true)
             .networkProtocolVersion(1)
