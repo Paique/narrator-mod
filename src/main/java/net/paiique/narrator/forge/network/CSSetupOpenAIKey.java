@@ -1,10 +1,10 @@
-package net.paiique.brpacks.narrator.forge.network;
+package net.paiique.narrator.forge.network;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.event.network.CustomPayloadEvent;
-import net.paiique.brpacks.narrator.forge.config.ConfigCommon;
-import net.paiique.brpacks.narrator.forge.util.BulkPlayerMessage;
+import net.paiique.narrator.forge.config.ConfigCommon;
+import net.paiique.narrator.forge.util.BulkPlayerMessage;
 import org.slf4j.Logger;
 
 public class CSSetupOpenAIKey {
