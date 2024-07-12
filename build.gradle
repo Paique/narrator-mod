@@ -69,7 +69,7 @@ dependencies {
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     implementation (group: 'org.projectlombok', name: 'lombok', version: '[1.18.30,)')
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
-    implementation fg.deobf("curse.maven:auudio-forge-606159:4203288")
+    implementation "curse.maven:melody-938643:5430441"
     implementation('net.sf.jopt-simple:jopt-simple:5.0.4') { version { strictly '5.0.4' } }
 }
 
